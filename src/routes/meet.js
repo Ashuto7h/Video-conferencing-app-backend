@@ -5,7 +5,10 @@ import { getTimeStamp } from '../utils/utils';
 import { Meet, MeetingTypes } from '../models/meet';
 import { Organization } from '../models/organization';
 import { createNewMeet, getMeetingByCode } from '../controllers/meet';
+import { MeetingTypes } from '../models/meet';
+import { Organization } from '../models/organization';
 import { getIO } from '../socketInstance';
+import { getTimeStamp } from '../utils/utils';
 
 const meetRouter = new Router();
 const io = getIO();
@@ -41,7 +44,6 @@ io.on('connection', (socket) => {
     // user will send req to join the meet
 
     socket.on('disconnect', () => {
-      console.log('user-disconnected', userID);
       socket.to(roomID).emit('user-disconnected', userID);
     });
 
@@ -52,21 +54,25 @@ io.on('connection', (socket) => {
         userData,
       });
     });
-
     /*
-     *   socket.on('reconnect-user', () => {
-     *       socket.to(roomID).broadcast.emit('new-user-connect', userData);
-     *   });
+     * socket.on('broadcast-message', (message) => {
+     *   socket
+     *     .to(roomID)
+     *     .emit('new-broadcast-messsage', { ...message, userData });
+     * });
      */
 
     /*
-     *   socket.on('display-media', (value) => {
-     *     socket.to(roomID).broadcast.emit('display-media', { userID, value });
-     *   });
-     *   socket.on('user-video-off', (value) => {
-     *     socket.to(roomID).broadcast.emit('user-video-off', value);
-     *   });
+     * socket.on('display-media', (value) => {
+     *   socket.to(roomID).broadcast.emit('display-media', { userID, value });
+     * });
      */
+    socket.on('video-off', (id) => {
+      socket.to(roomID).emit('toggle-video', { id, status: { video: false } });
+    });
+    socket.on('video-on', (id) => {
+      socket.to(roomID).emit('toggle-video', { id, status: { video: true } });
+    });
   });
 });
 export { meetRouter };

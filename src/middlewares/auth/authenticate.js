@@ -14,7 +14,6 @@ export const authenticate = async (req, res, next) => {
     // TODO: need to modify auth token to include _id
     const user = await User.findOne({
       _id: decoded._id,
-      // 'tokens.token': token,
     });
     if (!user) {
       responseHandler(req, res, 404);
