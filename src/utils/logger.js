@@ -1,9 +1,9 @@
-import { format, createLogger, transports } from 'winston';
+import { createLogger, format, transports } from 'winston';
 
 const { timestamp, combine, errors, printf } = format;
 
-const logFormat = printf(({ level, timestamp, message, stack }) => {
-  const log = `${timestamp}  ${level}  ${message || stack}`;
+const logFormat = printf(({ level, timestamp: ts, message, stack }) => {
+  const log = `${ts}  ${level}  ${message || stack}`;
   const logmap = { error: 'error', info: 'log', warn: 'warn' };
   // eslint-disable-next-line
   console[logmap[level]]?.(log);

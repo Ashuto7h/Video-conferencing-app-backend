@@ -20,13 +20,13 @@ const generatePassword = () => {
   return pwd;
 };
 
-function getTimeStamp() {
+const getTimeStamp = () => {
   const date = new Date();
   const hour = date.getHours();
   const min = date.getMinutes().toString().padStart(2, '0');
   const meridiem = hour < 12 ? 'am' : 'pm';
   const timeStamp = `${hour}:${min} ${meridiem}`;
   return timeStamp;
-}
+};
 
 export { generatePassword, toJSON, getTimeStamp };

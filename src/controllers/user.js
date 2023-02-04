@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/user';
 import { responseHandler } from '../utils/responseHandler';
 import userService from '../services/user';
+
 /**
  * POST `/api/v1/user/login`
  * @example
@@ -17,8 +18,8 @@ export const login = async (req, res) => {
     const token = await userService.generateAuthToken(user);
     const message = { ...user._doc, success: true, token };
     responseHandler(req, res, 200, null, message);
-  } catch (e) {
-    responseHandler(req, res, 400, e);
+  } catch (error) {
+    responseHandler(req, res, 400, error);
   }
 };
 
@@ -27,12 +28,12 @@ export const updateProfilePicture = async (req, res) => {
     const { imageUrl } = req.body;
     req.user.imageUrl = imageUrl;
     await req.user.save();
-    console.log(req.user);
     responseHandler(req, res, 200, null, { user: req.user });
-  } catch (e) {
-    responseHandler(req, res, 500, e);
+  } catch (error) {
+    responseHandler(req, res, 500, error);
   }
 };
+
 /**
  * POST `/api/v1/user/signup`
  * @example
@@ -49,8 +50,8 @@ export const createUser = async (req, res) => {
     const user = new User({ email, name, password });
     await user.save();
     responseHandler(req, res, 200, null, null);
-  } catch (e) {
-    responseHandler(req, res, 400, e);
+  } catch (error) {
+    responseHandler(req, res, 400, error);
   }
 };
 
@@ -62,56 +63,56 @@ export const resetPassword = async (req, res) => {
       req.body.password,
     );
 
-    // reflecting that password has been reset once
+    // Reflecting that password has been reset once
     if (!user.changedDefaultPassword) {
       user.changedDefaultPassword = true;
     }
     user.password = newPassword;
     user.save();
     responseHandler(req, res, 200);
-  } catch (e) {
-    responseHandler(req, res, 400, e);
+  } catch (error) {
+    responseHandler(req, res, 400, error);
   }
 };
 
-export const getUserById = async (req, res) => {
+export const getUserById = (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId);
+    const user = User.findById(userId);
 
     if (!user) {
       responseHandler(req, res, 404);
     }
 
     responseHandler(req, res, 200, null, { user });
-  } catch (e) {
+  } catch (error) {
     responseHandler(req, res, 500);
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = (req, res) => {
   try {
     const userId = req.params.id;
-    let user = await User.findById(userId);
+    let user = User.findById(userId);
 
     if (!user) {
       responseHandler(req, res, 404);
     }
 
-    user = await User.findOneAndDelete({ _id: userId });
+    user = User.findOneAndDelete({ _id: userId });
 
     responseHandler(req, res, 200, null, { user });
-  } catch (e) {
-    responseHandler(req, res, 500, e);
+  } catch (error) {
+    responseHandler(req, res, 500, error);
   }
 };
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = (req, res) => {
   try {
-    const users = await User.find({}, ['-password', '-tokens', '-__v']);
+    const users = User.find({}, ['-password', '-tokens', '-__v']);
     responseHandler(req, res, 200, null, { users });
-  } catch (e) {
-    responseHandler(req, res, 500, e);
+  } catch (error) {
+    responseHandler(req, res, 500, error);
   }
 };
 
@@ -128,12 +129,10 @@ export const getAllUsers = async (req, res) => {
 
 export const loginWithGoogle = async (req, res) => {
   try {
-    const {
-      email, name, imageUrl, token, 
-    } = req.body;
-    let user = await User.findOne({ email });
+    const { email, name, imageUrl, token } = req.body;
+    let user = User.findOne({ email });
     if (user) {
-      user = await User.findOneAndUpdate(
+      user = User.findOneAndUpdate(
         { email },
         {
           $push: { tokens: { token } },
@@ -152,8 +151,7 @@ export const loginWithGoogle = async (req, res) => {
       await user.save();
     }
     responseHandler(req, res, 200, null, { user });
-  } catch (e) {
-    console.log(e);
-    responseHandler(req, res, 500, e);
+  } catch (error) {
+    responseHandler(req, res, 500, error);
   }
 };

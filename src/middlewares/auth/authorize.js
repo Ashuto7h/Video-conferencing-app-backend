@@ -8,11 +8,11 @@ export const hasRole = (roles = []) => {
 
   return (req, res, next) => {
     if (roleList.length !== 0 && !roleList.includes(req.user.role)) {
-      // user's role is not authorized
+      // User's role is not authorized
       responseHandler(req, res, 401);
     }
 
-    // authentication and authorization successful
+    // Authentication and authorization successful
     next();
   };
 };

@@ -1,6 +1,6 @@
-import { model, Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-// organization
+// Organization
 
 const organizationSchema = new Schema(
   {

@@ -1,7 +1,5 @@
 import sio from 'socket.io';
-
 let io = null;
-
 export const getIO = () => io;
 
 export const initializeSocket = (server) => {
