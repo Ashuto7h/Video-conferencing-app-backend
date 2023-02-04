@@ -1,0 +1,3 @@
+- config linter and prettier
+- move to typescript
+- add .env.example
