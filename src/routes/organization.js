@@ -3,9 +3,9 @@ import {
   addMember,
   createOrganization,
   deleteOrganization,
+  fetchOrganizationWithUsers,
   fetchUserOrganization,
   removeMember,
-  fetchOrganizationWithUsers,
 } from '../controllers/organization';
 import { authenticate } from '../middlewares/auth';
 

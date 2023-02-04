@@ -7,4 +7,4 @@ export const rootRouter = new Router();
 rootRouter.use('/user', userRouter);
 rootRouter.use('/org', organizationRouter);
 rootRouter.use('/meet', meetRouter);
-rootRouter.get('/', (_, res) => res.send('api v1'));
+rootRouter.get('/', (req, res) => res.send('api v1'));

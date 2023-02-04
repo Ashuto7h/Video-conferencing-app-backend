@@ -13,7 +13,7 @@ export const errorResponses = {
   500: 'Internal Server Error',
 };
 
-export const responseHandler = async (req, res, code, error, message) => {
+export const responseHandler = (req, res, code, error, message) => {
   try {
     if (error) {
       res.status(code).send({ error: error.toString() });
@@ -42,7 +42,7 @@ export const responseHandler = async (req, res, code, error, message) => {
     } else {
       res.status(code).send();
     }
-    // throw new Error();
+    // Throw new Error();
   } catch (err) {
     logger.error(err);
   }

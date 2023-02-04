@@ -2,11 +2,11 @@ import express from 'express';
 import {
   createUser,
   deleteUser,
+  getAllUsers,
   getUserById,
   login,
-  resetPassword,
-  getAllUsers,
   loginWithGoogle,
+  resetPassword,
   updateProfilePicture,
 } from '../controllers/user';
 import { authenticate } from '../middlewares/auth';

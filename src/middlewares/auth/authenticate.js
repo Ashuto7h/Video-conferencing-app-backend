@@ -7,12 +7,11 @@ import config from '../../configs/index';
 
 dotenv.config();
 
-export const authenticate = async (req, res, next) => {
+export const authenticate = (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
     const decoded = verify(token, config.jwtSecret);
-    // TODO: need to modify auth token to include _id
-    const user = await User.findOne({
+    const user = User.findOne({
       _id: decoded._id,
     });
     if (!user) {
@@ -21,7 +20,7 @@ export const authenticate = async (req, res, next) => {
     req.token = token;
     req.user = user;
     next();
-  } catch (e) {
+  } catch (error) {
     responseHandler(req, res, 401);
   }
 };

@@ -4,7 +4,7 @@ import { User } from '../models/user';
 import config from '../configs';
 
 const findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email }, ['-__v']);
+  const user = User.findOne({ email }, ['-__v']);
   if (!user) {
     throw new Error('invalid creds');
   }
@@ -19,7 +19,6 @@ const findByCredentials = async (email, password) => {
 const generateAuthToken = async (user) => {
   const userRef = user;
   const token = jwt.sign({ _id: userRef._id.toString() }, config.jwtSecret);
-  // userRef.tokens = userRef.tokens.concat({ token });
   await userRef.save();
   return token;
 };

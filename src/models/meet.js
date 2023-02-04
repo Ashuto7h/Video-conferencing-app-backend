@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 export const MeetingTypes = {
   OPEN_TO_ALL: 0,

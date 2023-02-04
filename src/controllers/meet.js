@@ -7,7 +7,9 @@ export const createNewMeet = async (req, res) => {
   let { orgId } = req.body;
   try {
     const meetingCode = uuidv4();
-    if (type !== MeetingTypes.ORGANIZATION) orgId = null;
+    if (type !== MeetingTypes.ORGANIZATION) {
+      orgId = null;
+    }
     const meet = new Meet({
       host: req.user.id,
       meetingCode,
@@ -22,8 +24,10 @@ export const createNewMeet = async (req, res) => {
   }
 };
 
-export const getMeetingByCode = async (meetingCode) => {
-  const meet = await Meet.findOne({ meetingCode });
-  if (!meet) throw Error(`Meeting by ${meetingCode} is not found`);
+export const getMeetingByCode = (meetingCode) => {
+  const meet = Meet.findOne({ meetingCode });
+  if (!meet) {
+    throw Error(`Meeting by ${meetingCode} is not found`);
+  }
   return meet;
 };
