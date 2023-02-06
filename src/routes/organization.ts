@@ -9,7 +9,7 @@ import {
 } from '../controllers/organization';
 import { authenticate } from '../middlewares/auth';
 
-const organizationRouter = new express.Router();
+const organizationRouter = express.Router();
 
 organizationRouter.post('/create', authenticate, createOrganization);
 organizationRouter.post('/add-member', authenticate, addMember);

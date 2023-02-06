@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/user';
 import { responseHandler } from '../utils/responseHandler';
 import userService from '../services/user';
+import { Request, Response } from 'express';
 
 /**
  * POST `/api/v1/user/login`
@@ -11,24 +12,26 @@ import userService from '../services/user';
  *    password: 'pqrs'
  * }
  */
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { email: userEmail, password } = req.body;
     const user = await userService.findByCredentials(userEmail, password);
     const token = await userService.generateAuthToken(user);
-    const message = { ...user._doc, success: true, token };
-    responseHandler(req, res, 200, null, message);
+    const message = { ...user, success: true, token };
+    responseHandler(req, res, 200, message);
   } catch (error) {
     responseHandler(req, res, 400, error);
   }
 };
 
-export const updateProfilePicture = async (req, res) => {
+export const updateProfilePicture = async (req: Request, res: Response) => {
   try {
     const { imageUrl } = req.body;
-    req.user.imageUrl = imageUrl;
-    await req.user.save();
-    responseHandler(req, res, 200, null, { user: req.user });
+    if (req.user) {
+      req.user.imageUrl = imageUrl;
+      await req.user?.save();
+    }
+    responseHandler(req, res, 200, { user: req.user });
   } catch (error) {
     responseHandler(req, res, 500, error);
   }
@@ -43,22 +46,22 @@ export const updateProfilePicture = async (req, res) => {
  *    name: 'abcd'
  * }
  */
-export const createUser = async (req, res) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
     const { email, name } = req.body;
     const password = await bcrypt.hash(req.body.password, 8);
     const user = new User({ email, name, password });
     await user.save();
-    responseHandler(req, res, 200, null, null);
+    responseHandler(req, res, 200, null);
   } catch (error) {
     responseHandler(req, res, 400, error);
   }
 };
 
-export const resetPassword = async (req, res) => {
+export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { newPassword } = req.body;
-    const user = await User.findByCredentials(
+    const user = await userService.findByCredentials(
       req.body.userId,
       req.body.password,
     );
@@ -69,48 +72,48 @@ export const resetPassword = async (req, res) => {
     }
     user.password = newPassword;
     user.save();
-    responseHandler(req, res, 200);
+    responseHandler(req, res, 200, '');
   } catch (error) {
     responseHandler(req, res, 400, error);
   }
 };
 
-export const getUserById = (req, res) => {
+export const getUserById = (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const user = User.findById(userId);
 
     if (!user) {
-      responseHandler(req, res, 404);
+      responseHandler(req, res, 404, '');
     }
 
-    responseHandler(req, res, 200, null, { user });
+    responseHandler(req, res, 200, { user });
   } catch (error) {
-    responseHandler(req, res, 500);
+    responseHandler(req, res, 500, '');
   }
 };
 
-export const deleteUser = (req, res) => {
+export const deleteUser = (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     let user = User.findById(userId);
 
     if (!user) {
-      responseHandler(req, res, 404);
+      responseHandler(req, res, 404, '');
     }
 
     user = User.findOneAndDelete({ _id: userId });
 
-    responseHandler(req, res, 200, null, { user });
+    responseHandler(req, res, 200, { user });
   } catch (error) {
     responseHandler(req, res, 500, error);
   }
 };
 
-export const getAllUsers = (req, res) => {
+export const getAllUsers = (req: Request, res: Response) => {
   try {
     const users = User.find({}, ['-password', '-tokens', '-__v']);
-    responseHandler(req, res, 200, null, { users });
+    responseHandler(req, res, 200, { users });
   } catch (error) {
     responseHandler(req, res, 500, error);
   }
@@ -127,12 +130,12 @@ export const getAllUsers = (req, res) => {
  * }
  */
 
-export const loginWithGoogle = async (req, res) => {
+export const loginWithGoogle = async (req: Request, res: Response) => {
   try {
     const { email, name, imageUrl, token } = req.body;
-    let user = User.findOne({ email });
+    let user = await User.findOne({ email }).exec();
     if (user) {
-      user = User.findOneAndUpdate(
+      user = await User.findOneAndUpdate(
         { email },
         {
           $push: { tokens: { token } },
@@ -140,7 +143,7 @@ export const loginWithGoogle = async (req, res) => {
           imageUrl,
           name,
         },
-      );
+      ).exec();
     } else {
       user = new User({
         email,
@@ -150,7 +153,7 @@ export const loginWithGoogle = async (req, res) => {
       });
       await user.save();
     }
-    responseHandler(req, res, 200, null, { user });
+    responseHandler(req, res, 200, { user });
   } catch (error) {
     responseHandler(req, res, 500, error);
   }

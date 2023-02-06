@@ -1,5 +1,7 @@
-const toJSON = (obj) => {
-  const newObj = obj?.toObject?.() ?? obj;
+import { Document } from 'mongoose';
+
+const toJSON = (obj: Document) => {
+  const newObj = obj.toObject();
 
   if (newObj.password) {
     delete newObj.password;

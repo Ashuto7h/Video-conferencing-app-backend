@@ -2,11 +2,11 @@
 /* eslint-disable multiline-comment-style */
 import { Router } from 'express';
 import { createNewMeet } from '../controllers/meet';
-import { getIO } from '../socketInstance';
+import { getSocketInstance } from '../socketInstance';
 import { getTimeStamp } from '../utils/utils';
 
-const meetRouter = new Router();
-const io = getIO();
+const meetRouter = Router();
+const io = getSocketInstance();
 meetRouter.get('/create', createNewMeet);
 
 io.on('connection', (socket) => {

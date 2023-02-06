@@ -11,7 +11,7 @@ import {
 } from '../controllers/user';
 import { authenticate } from '../middlewares/auth';
 
-const userRouter = new express.Router();
+const userRouter = express.Router();
 
 userRouter.get('/', getAllUsers);
 userRouter.post('/login', login);

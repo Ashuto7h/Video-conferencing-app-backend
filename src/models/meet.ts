@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 
-export const MeetingTypes = {
-  OPEN_TO_ALL: 0,
-  ORGANIZATION: 2,
-  RESTRICTED: 1,
-};
+export enum MeetingTypes {
+  OPEN_TO_ALL,
+  ORGANIZATION,
+  RESTRICTED,
+}
 
 const meetSchema = new Schema(
   {

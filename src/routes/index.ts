@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { organizationRouter } from './organization';
 import { userRouter } from './user';
 import { meetRouter } from './meet';
 
-export const rootRouter = new Router();
+export const rootRouter = Router();
 rootRouter.use('/user', userRouter);
 rootRouter.use('/org', organizationRouter);
 rootRouter.use('/meet', meetRouter);
-rootRouter.get('/', (req, res) => res.send('api v1'));
+rootRouter.get('/', (req: Request, res: Response) => res.send('api v1'));

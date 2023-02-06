@@ -1,8 +1,13 @@
 import { Schema, model } from 'mongoose';
+import { IUser } from './user';
 
-// Organization
+export interface IOrganization {
+  admin: IUser;
+  members: IUser[];
+  name: string;
+}
 
-const organizationSchema = new Schema(
+const organizationSchema = new Schema<IOrganization>(
   {
     admin: {
       ref: 'User',
@@ -28,4 +33,7 @@ const organizationSchema = new Schema(
   },
 );
 
-export const Organization = model('Organization', organizationSchema);
+export const Organization = model<IOrganization>(
+  'Organization',
+  organizationSchema,
+);

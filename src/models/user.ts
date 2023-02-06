@@ -1,7 +1,19 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
+import { IOrganization } from './organization';
 
-const userSchema = new Schema(
+export interface IUser {
+  id: string;
+  email: string;
+  imageUrl: string;
+  name: string;
+  organizations: IOrganization[];
+  password?: string;
+  tokens: { token: string }[];
+  changedDefaultPassword: boolean;
+}
+
+const userSchema = new Schema<IUser>(
   {
     email: {
       lowercase: true,
@@ -9,7 +21,7 @@ const userSchema = new Schema(
       trim: true,
       type: String,
       unique: true,
-      validate: (value) => {
+      validate: (value: string) => {
         if (!validator.isEmail(value)) {
           throw new Error('Email is invalid');
         }
@@ -34,7 +46,7 @@ const userSchema = new Schema(
       minlength: 8,
       trim: true,
       type: String,
-      validate: (value) => {
+      validate: (value: string) => {
         if (value.toLowerCase().includes('password')) {
           throw new Error('Password cannot contain "password"');
         }
@@ -54,4 +66,4 @@ const userSchema = new Schema(
   },
 );
 
-export const User = model('User', userSchema);
+export const User = model<IUser>('User', userSchema);
