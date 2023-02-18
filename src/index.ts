@@ -7,6 +7,7 @@ import { ExpressPeerServer } from 'peer';
 import config from './configs';
 import { initializeSocket } from './socketInstance';
 import { logger } from './utils/logger';
+import { printRoutes } from './utils/route-printer';
 
 const app = express();
 const httpSever = createServer(app);
@@ -29,61 +30,11 @@ if (!config.mongoDBUrl) {
   throw new Error('mongoDBUrl not found in config');
 }
 mongoose.connect(config.mongoDBUrl);
+mongoose.set('strictQuery', false);
 
 app.get('/', (req: Request, res: Response) =>
   res.send('Video Conference Web App backend.\nhealth check : passing'),
 );
-
-// eslint-disable-next-line camelcase
-const split = (thing: string | { fast_slash: boolean }) => {
-  if (typeof thing === 'string') {
-    return thing.split('/');
-  }
-  if (thing.fast_slash) {
-    return [''];
-  }
-  const match = thing
-    .toString()
-    .replace('\\/?', '')
-    .replace('(?=\\/|$)', '$')
-    .match(/^\/\^((?:\\[.*+?^${}()|[\]\\/]|[^.*+?^${}()|[\]\\/])*)\$\//u);
-  return match
-    ? match[1].replace(/\\(.)/gu, '$1').split('/')
-    : [`<complex:${thing.toString()}>`];
-};
-
-interface ILayer {
-  name: string;
-  handle: IRoute;
-  route: IRoute;
-  regexp: string;
-  method: string;
-}
-
-interface IRoute {
-  stack: ILayer[];
-  path: string;
-  regexp: string;
-}
-
-const printRoutes = (path: string[], layer: ILayer) => {
-  if (layer.route) {
-    layer.route.stack.forEach(
-      printRoutes.bind(null, path.concat(split(layer.route.path))),
-    );
-  } else if (layer.name === 'router' && layer.handle.stack) {
-    layer.handle.stack.forEach(
-      printRoutes.bind(null, path.concat(split(layer.regexp))),
-    );
-  } else if (layer.method) {
-    // eslint-disable-next-line no-console
-    console.log(
-      '%s /%s',
-      layer.method.toUpperCase().padEnd(10),
-      path.concat(split(layer.regexp)).filter(Boolean).join('/'),
-    );
-  }
-};
 
 import('./routes').then(({ rootRouter }) => {
   app.use('/api/v1', rootRouter);

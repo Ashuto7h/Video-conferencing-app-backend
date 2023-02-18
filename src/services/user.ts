@@ -3,7 +3,10 @@ import jwt from 'jsonwebtoken';
 import config from '../configs';
 import { User } from '../models/user';
 
-const findByCredentials = async (email: string, password: string) => {
+const findByCredentials = async (
+  email: string,
+  password: string,
+): Promise<TUserDoc> => {
   const user = await User.findOne({ email }, ['-__v']).exec();
   if (!user) {
     throw new Error('invalid creds');
@@ -23,5 +26,5 @@ const generateAuthToken = async (user: TUserDoc) => {
   return token;
 };
 
-const userService = { findByCredentials, generateAuthToken };
-export default userService;
+const userDbService = { findByCredentials, generateAuthToken };
+export default userDbService;

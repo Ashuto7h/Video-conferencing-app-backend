@@ -1,8 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../index.d.ts" />
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Meet, MeetingTypes } from '../models/meet';
 import { responseHandler } from '../utils/responseHandler';
-import '../index.d';
 
 export const createNewMeet = async (req: Request, res: Response) => {
   const { type, title } = req.body;

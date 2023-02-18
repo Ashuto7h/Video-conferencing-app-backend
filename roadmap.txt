@@ -1,1 +1,7 @@
-- move to typescript
+- migrate to nest js
+- api explore 
+    user: 
+        create user, update user, login, logout, delete user, add profile pic, forget password, get user,
+    org
+    meet
+- write tests

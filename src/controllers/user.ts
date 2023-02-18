@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/user';
 import { responseHandler } from '../utils/responseHandler';
-import userService from '../services/user';
+import userDbService from '../services/user';
 import { Request, Response } from 'express';
 
 /**
@@ -15,8 +15,8 @@ import { Request, Response } from 'express';
 export const login = async (req: Request, res: Response) => {
   try {
     const { email: userEmail, password } = req.body;
-    const user = await userService.findByCredentials(userEmail, password);
-    const token = await userService.generateAuthToken(user);
+    const user = await userDbService.findByCredentials(userEmail, password);
+    const token = await userDbService.generateAuthToken(user);
     const message = { ...user, success: true, token };
     responseHandler(req, res, 200, message);
   } catch (error) {
@@ -61,7 +61,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { newPassword } = req.body;
-    const user = await userService.findByCredentials(
+    const user = await userDbService.findByCredentials(
       req.body.userId,
       req.body.password,
     );
