@@ -1,7 +1,18 @@
-- migrate to nest js
-- api explore 
-    user: 
-        create user, update user, login, logout, delete user, add profile pic, forget password, get user,
-    org
-    meet
-- write tests
+Frontend: 
+=========
+- migrate to next js
+- setup linter
+- package updates
+
+Backend: 
+=========
+- migrate to nest js/graphql
+- swc compiler, pnpm
+- packages update
+
+Features:
+=========
+- user login/logout
+- user profile - generate id, online status, saved messages, settings, signout, update profile pic, username
+- Create organization - add/remove member, make/remove admin, icon/name update, post in general channel
+- sidebar - DP, new (meeting, group, organization), organizations, meetings, groups, activities
