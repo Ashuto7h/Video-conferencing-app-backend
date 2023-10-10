@@ -7,8 +7,8 @@ Frontend:
 Backend: 
 =========
 - migrate to nest js/graphql
-- swc compiler, pnpm
-- packages update
+- jest sample
+- config update
 
 Features:
 =========

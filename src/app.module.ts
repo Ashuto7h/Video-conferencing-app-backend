@@ -2,10 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from './config/configuration';
 import { envValidate } from './config/env.validation';
-import { DatabaseModule, LoggerModule } from './core';
-import { ModelsModule } from './models';
-import { RepositoryModule } from './repository';
-import { APIV1Module } from './routes/v1';
+import { LoggerModule } from './core';
+import { APIV1Module } from './api/v1/v1.module';
 
 @Module({
     imports: [
@@ -15,10 +13,7 @@ import { APIV1Module } from './routes/v1';
             validate: envValidate,
             load: [configuration],
         }),
-        DatabaseModule,
         LoggerModule,
-        RepositoryModule,
-        ModelsModule,
         APIV1Module,
     ],
 })

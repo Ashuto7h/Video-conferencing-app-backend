@@ -1,11 +1,5 @@
 module.exports = {
-    collectCoverageFrom: [
-        'src/**/*.(t|j)s',
-        '!db/migrations/*',
-        '!db/seeders/*',
-        '!src/core/logger/*',
-        '!src/config/*',
-    ],
+    collectCoverageFrom: ['src/**/*.(t|j)s', '!src/core/logger/*', '!src/config/*'],
     coverageDirectory: './coverage',
     logHeapUsage: true,
     maxWorkers: 2,
@@ -14,6 +8,6 @@ module.exports = {
     testEnvironment: 'node',
     testRegex: '.*\\.(test|spec)\\.ts$',
     transform: {
-        '^.+\\.(t|j)s$': 'ts-jest',
+        '^.+\\.(t|j)s?$': ['@swc/jest'],
     },
 };

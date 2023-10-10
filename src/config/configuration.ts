@@ -5,12 +5,7 @@ export const configuration = () => {
     return {
         PORT: env.PORT,
         DATABASE: {
-            DIALECT: 'postgres' as const,
-            HOST: env.DATABASE_HOST,
-            NAME: env.DATABASE_NAME,
-            PASSWORD: env.DATABASE_PASSWORD,
-            PORT: env.DATABASE_PORT,
-            USERNAME: env.DATABASE_USERNAME,
+            URL: env.MONGODB_URL,
         },
         JWT: {
             ACCESS_SECRET: env.JWT_ACCESS_SECRET,

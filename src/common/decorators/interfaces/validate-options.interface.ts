@@ -26,5 +26,6 @@ export interface IsDateOptions extends BasicValidationOptions {
 }
 
 export interface IsObjectOptions extends BasicValidationOptions {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     type: (type?: TypeHelpOptions | undefined) => Function;
 }

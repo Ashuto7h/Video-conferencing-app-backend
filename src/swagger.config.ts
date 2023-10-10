@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ApiV1Imports } from './routes/v1/api-v1.routes';
+import { APIV1Imports } from './api/v1/v1.routes';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const configSwaggerForV1 = (app: INestApplication) => {
@@ -16,7 +16,7 @@ export const configSwaggerForV1 = (app: INestApplication) => {
         .build();
     const document = SwaggerModule.createDocument(app, config, {
         // eslint-disable-next-line @typescript-eslint/ban-types
-        include: ApiV1Imports as Function[],
+        include: APIV1Imports as Function[],
     });
     SwaggerModule.setup('api/v1/docs', app, document);
 };

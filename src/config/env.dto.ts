@@ -1,34 +1,5 @@
 import { IntersectionType } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
-class DatabaseConfig {
-    @IsString()
-    @IsNotEmpty()
-    DATABASE_DIALECT: 'postgres';
-
-    @IsString()
-    @IsNotEmpty()
-    DATABASE_HOST: string;
-
-    @IsString()
-    @IsNotEmpty()
-    DATABASE_NAME: string;
-
-    @IsString()
-    @IsNotEmpty()
-    DATABASE_PASSWORD: string;
-
-    @IsNumber()
-    DATABASE_PORT: number;
-
-    @IsString()
-    @IsNotEmpty()
-    DATABASE_USERNAME: string;
-
-    @IsBoolean()
-    @IsOptional()
-    DATABASE_LOGGING: boolean = false;
-}
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 class JwtConfig {
     @IsString()
@@ -46,7 +17,10 @@ class JwtConfig {
     JWT_REFRESH_EXPIRY: string = '7d';
 }
 
-export class EnvVars extends IntersectionType(DatabaseConfig, JwtConfig) {
+export class EnvVars extends IntersectionType(JwtConfig) {
     @IsNumber()
-    PORT: number = 3000;
+    PORT: number = 8000;
+
+    @IsString()
+    MONGODB_URL: string;
 }
