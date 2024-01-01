@@ -10,7 +10,7 @@ type Author {
 }
 
 type Mutation {
-  upvotePost(postId: Int!): Post!
+  upvotePost(postId: Int!): Post
 }
 
 type Post {

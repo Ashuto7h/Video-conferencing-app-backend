@@ -19,7 +19,7 @@ export class AuthorsResolver {
         return this.postsService.findAll({ authorId: id });
     }
 
-    @Mutation(() => Post)
+    @Mutation(() => Post, { nullable: true })
     upvotePost(@Args({ name: 'postId', type: () => Int }) postId: number) {
         return this.postsService.upvoteById({ id: postId });
     }

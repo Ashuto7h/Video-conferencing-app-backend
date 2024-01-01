@@ -11,6 +11,7 @@ import { PostModule } from './post/post.module';
             driver: ApolloDriver,
             autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
             sortSchema: true,
+            playground: true,
         }),
         AuthorModule,
         PostModule,

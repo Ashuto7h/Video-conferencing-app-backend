@@ -16,7 +16,9 @@ async function bootstrap() {
     app.useLogger(logger);
     app.use(withContext, withCorrelationId);
     app.enableShutdownHooks();
-    app.use(helmet());
+    if (process.env.NODE_ENV === 'production') {
+        app.use(helmet());
+    }
     const configService = app.get(ConfigService);
     const port = configService.get('PORT') as number;
     const validationPipe = new ValidationPipe({

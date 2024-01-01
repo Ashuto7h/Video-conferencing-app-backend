@@ -6,10 +6,10 @@ export class PostsService {
     private posts: Post[];
 
     constructor() {
-        this.posts = [];
+        this.posts = [{ authorId: 1, id: 1, title: 'ABCD', votes: 0 }];
     }
 
-    upvoteById(query: { id: number }) {
+    upvoteById(query: { id: number }): Post | undefined {
         const idx = this.posts.findIndex((post) => post.id === query.id);
         if (idx >= 0) {
             const { votes } = this.posts[idx];
@@ -18,7 +18,9 @@ export class PostsService {
             } else {
                 this.posts[idx].votes = 1;
             }
+            return this.posts[idx];
         }
+        return undefined;
     }
 
     findAll(query: { authorId: number }): Post[] {
