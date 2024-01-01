@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APIV1Module } from './api/v1/v1.module';
 import { configuration } from './config/configuration';
 import { envValidate } from './config/env.validation';
 import { LoggerModule } from './core';
-import { APIV1Module } from './api/v1/v1.module';
+import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { APIV1Module } from './api/v1/v1.module';
             validate: envValidate,
             load: [configuration],
         }),
+        GraphqlModule,
         LoggerModule,
         APIV1Module,
     ],

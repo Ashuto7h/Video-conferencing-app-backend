@@ -1,8 +1,6 @@
 Frontend: 
 =========
-- migrate to next js
-- setup linter
-- package updates
+
 
 Backend: 
 =========
