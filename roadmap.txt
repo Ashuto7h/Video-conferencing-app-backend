@@ -4,7 +4,6 @@ Frontend:
 
 Backend: 
 =========
-- migrate to nest js/graphql
 - jest sample
 - config update
 
